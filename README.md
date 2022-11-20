@@ -1,2 +1,26 @@
-# movies-explorer-frontend
-diplom - frontend movie priject
+# movies-explorer-api
+Репозиторий дипломного проекта `Movie`, включающий фронтенд 
+и бэкенд части приложения со следующими возможностями: авторизации 
+и регистрации пользователей, операции с карточками и пользователями. 
+* Бэкенд расположен в репозитории 
+```html
+movies-explorer-api
+``` 
+* Фронтэнд расположен в репозитории 
+```html
+movies-explorer-frontend
+``` 
+
+Проект включает регистрацию ВМ в ЯндексОблаке с привязкой доменого имени 
+с  публичным IP и выпуск SSL сертификата
+
+
+
+# Frontend приложения:
+https://olegvpc.diplom.nomoredomains.icu
+
+# Backend приложения:
+https://api.olegvpc.diplom.nomoredomains.icu
+
+## Публичный ip: 
+158.160.39.232
