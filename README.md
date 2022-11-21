@@ -24,3 +24,4 @@ https://api.olegvpc.diplom.nomoredomains.icu
 
 ## Публичный ip: 
 158.160.39.232
+* [Ссылка на макет в Figma](https://www.figma.com/file/WF9s5zRvAfIl9eTCZAOC3a/Diploma-(Copy)?node-id=891%3A3857&t=LcUsEubaaOLSTN75-1)
