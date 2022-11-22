@@ -4,7 +4,7 @@ import { getTimeWithMin } from '../../utils/getTimeWithMinutes';
 
 function MoviesCard({ card, savedPages }) {
   const [isLiked, setIsLiked ] = useState(false)
-  console.log(savedPages)
+  // console.log(savedPages)
   function handleLike () {
     setIsLiked(!isLiked)
   }

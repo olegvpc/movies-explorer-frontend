@@ -43,7 +43,7 @@ function App() {
 
   // тестовые состояния авторизации пользователя и других стейтов
   const [currentUser, setCurrentUser] = useState({name: "Oleg", email: "ol@ya.ru"});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isLoaging, setIsLoaging] = useState(false);
 
 

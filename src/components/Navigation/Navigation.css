@@ -55,7 +55,7 @@
 }
 
 .menu__link_type_signin {
-  background-color: #000;
+  background-color: #3456F3;
   color: #fff;
   margin: 0;
 }
@@ -91,7 +91,7 @@
 
 .menu__btn_type_burger{
   background-image: url('../../images/burger-menu.svg');
-  background-color: #F4F4F4;
+  background-color: transparent;
 }
 
 .menu__btn_type_close{

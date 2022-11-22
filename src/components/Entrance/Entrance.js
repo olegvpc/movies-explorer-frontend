@@ -80,12 +80,10 @@ function Entrance({
           {/*<span id='password-error' className='entrance__error'>*/}
           {/*  {errors.password || ''}*/}
           {/*</span>*/}
-
-        </label>
         <span className='entrance__total-error'>
           {(errors.name ||  errors.password || errors.email) && infoMessage}
         </span>
-
+        </label>
 
         <button
           className='entrance__submit-btn app__link'
