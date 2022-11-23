@@ -1,0 +1,13 @@
+.logo{
+  display: inline-block;
+  height: 38px;
+  width: 38px;
+  /*transition: transform .3s ease-in;*/
+  transition: opacity .3s ease-in;
+}
+
+.logo:hover{
+  cursor: pointer;
+  /*transform: scale(1.1);*/
+  opacity: .5;
+}

@@ -1,0 +1,27 @@
+.app {
+  min-height: 100vh;
+  min-width: 320px;
+  font: 400 14px/20px 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+  /*font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;*/
+
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*padding: 0 70px;*/ /* нельзя делать единый стиль */
+  /*position: relative;*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*border: 1px red solid;*/
+}
+
+.app__link {
+  text-decoration: none;
+  transition: opacity 0.3s ease-in-out;
+
+}
+
+.app__link:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
