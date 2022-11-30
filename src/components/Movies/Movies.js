@@ -7,15 +7,16 @@ import { filterMovies, filterShortMovies } from '../../utils/utils';
 
 function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
   const existSearch = JSON.parse(localStorage.getItem('searchedMovies'));
+  const existQuery = localStorage.getItem('searchQuery')
 
   const initialStateCheckbox = localStorage.getItem('shortFilms') === 'on' ? 'on' : 'off';
   const [shortFilms, setShortFilms] = useState(initialStateCheckbox);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(existQuery ? existQuery : '');
 
   // состояния фильмов
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
-  const [isSavedSearchedMovie, setIsSavedSearchedMovie] = useState(false);
+  const [isSavedSearchedMovie, setIsSavedSearchedMovie] = useState(existSearch? true: false);
   const [searchedMovies, setSearchedMovies] = useState(existSearch?.length ? existSearch : [])
   // состояния вспомогательные
   const [isNothingFound, setIsNothingFound] = useState(false);
@@ -84,22 +85,24 @@ function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
     }
     if (isSavedSearchedMovie) {
       console.log(`short: ${shortFilms} savedMassive: ${searchedMovies}`)
-      filterShortMovie(searchedMovies)
-      handleCheckFilteredMovies(filteredMovies)
+      const arr = filterMovies(searchedMovies, searchQuery, shortFilms);
+      filterShortMovie(arr)
+      handleCheckFilteredMovies(arr)
       console.log(`saved- length filtered massive: ${filteredMovies.length}`)
     }
   }, [searchQuery, allMovies, shortFilms])
 
   // НАЧАЛЬНОЕ МОНТИРОВАНИЕ И УСТАНОВКА СТЕЙТА сохраненных фильмов - true
-  useEffect(() => {
-    if (searchedMovies?.length) {
-      setIsSavedSearchedMovie(true)
-      filterShortMovie(searchedMovies)
-      handleCheckFilteredMovies(filteredMovies)
-      console.log(
-        `start exist Mount - short: ${shortFilms}, arr: ${searchedMovies}`)
-      }
-    }, [])
+  // useEffect(() => {
+  //   if (searchedMovies?.length) {
+  //     setIsSavedSearchedMovie(true)
+  //     filterShortMovie(searchedMovies)
+  //     handleCheckFilteredMovies(filteredMovies)
+  //
+  //     console.log(
+  //       `start exist Mount - short: ${shortFilms}, arr: ${searchedMovies}`)
+  //     }
+  //   }, [])
 
 
   return (
