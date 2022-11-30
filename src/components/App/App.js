@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
@@ -13,49 +13,178 @@ import Profile from '../Profile/Profile';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import PageNotFound from'../PageNotFound/PageNotFound';
-import ProtectedRoute from "../ProtectedRoute";
-import { MOVIES_URL, MESSAGE_ERROR } from '../../utils/constants';
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import {
+  getUserInfo,
+  saveNewMovie,
+  deleteMovie,
+  updateUserInfo,
+  register,
+  login,
+  verifyToken
+} from '../../utils/MainApi';
+import { getUsersMovies } from '../../utils/MainApi'
+import { SUCCESSFUL_CODE } from '../../utils/constants';
+
 
 function App() {
+  const history = useHistory();
 
-  // загружаем тестовые данные для показа - пока без фильтров и паджинации
-  function getMovies() {
-    return fetch(MOVIES_URL)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
+  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+   // состояния фильмов пользователя
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [isError, setIsError] = useState(false);
+
+    const [infoMessage, setInfoMessage] = useState({
+    isShown: false,
+    message: '',
+    code: SUCCESSFUL_CODE,
+  });
+
+
+  // проверка наличия токена юзера в localStorage - если есть, то провести аутентификация юзера
+  useEffect(() => {
+      console.count("RENDER - TOKEN") // пустой массив зависимостей - Render только при монтировании
+      checkToken();
+      setIsLoading(false)
+  }, [])
+
+  // если пользователь уже авторизован, загрузить его данные и корточки с сервера
+  useEffect(() => {
+    if (loggedIn) {
+      setIsLoading(true)
+      Promise.all([getUserInfo(), getUsersMovies()])
+        .then(([userData, moviesData]) => {
+          setCurrentUser(userData);
+          setSavedMovies(moviesData);
+          localStorage.setItem('savedMovies', JSON.stringify(moviesData)); // для тестирования
+          setIsError(false);
+        })
+        .catch((err) => {
+          setIsError(true);
+          console.log(`ошибка получения данных по API при первичном обращении за карточками и юзером ${err}`);
+        })
+      .finally(() => setIsLoading(false))
+    }
+  }, [loggedIn])
+
+  // обработчик добавления фильма в избранное(сохранение в базе MainApi)
+  function handleSaveMovie(movie){
+    saveNewMovie(movie)
+      .then(newCard => {
+        setSavedMovies([newCard, ...savedMovies]);
+      })
+      .catch(err => console.log(`Запись фильма на MainApi не прошла ${err}`))
+  }
+
+  // обработчик удаления фильма из избранного
+  function handleDeleteMovie(movie){
+    deleteMovie(movie._id)
+      .then(() => {
+        const newMoviesList = savedMovies.filter((m) => m._id === movie._id ? false : true);
+        setSavedMovies(newMoviesList);
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // для тестирования
+      })
+      .catch(err => console.log(`Удаление фильма на MainApi не выполнено ${err}`))
+  };
+
+  // обработчик изменения данных пользователя
+  function handleUpdateUser(name, email) {
+    updateUserInfo(name, email)
+      .then(data => {
+        // console.log(data)
+        setCurrentUser(data);
+        setInfoMessage({
+          ...infoMessage,
+          isShown: true,
+          type: 'profile',
+          code: SUCCESSFUL_CODE,
+          message: "OK"
+        });
+      })
+      .catch((err) => {
+        // console.log(err)
+        setInfoMessage({
+          ...infoMessage,
+          isShown: true,
+          message: err.message,
+          code: err.statusCode,
+          type: 'profile',
+        });
       })
   }
 
-  useEffect(() => {
-    getMovies()
-      .then((data) => {
-        console.log(`savedMoviesList`)
-        localStorage.setItem('movies', JSON.stringify(data))
-
+  // обработчик регистрации пользователя
+  function handleRegister(name, email, password){
+    register(name, email, password)
+      .then(data => {
+        if(data){
+          // console.log(data); // {email: 'ol7-server@ya.ru', name: 'Ol-second', _id: '63802aea5e9d371a9785df5a'}
+          handleLogin(data.email, password);
+        }
       })
       .catch((err) => {
-        console.log(err.message)
+        // console.log(err)
+        setInfoMessage({
+          ...infoMessage,
+          isShown: true,
+          message: err.message,
+          code: err.status,
+          type: 'register',
+        });
+      })
+  }
+
+  // обработчик авторизации пользователя
+  function handleLogin(email, password) {
+    login(email, password)
+      .then(res => {
+        setLoggedIn(true)
+        localStorage.setItem('jwt', res.jwt);
+        history.push('/movies');
+      })
+      .catch((err) => {
+        setInfoMessage({
+          ...infoMessage,
+          isShown: true,
+          message: err.message,
+          code:err.status,
+          type: 'login',
+        });
+      })
+  }
+
+  function checkToken() {
+    const token = localStorage.getItem('jwt');
+    if(token) {
+      verifyToken(token)
+      .then((res) => {
+        setLoggedIn(true);
+        history.push('/movies');
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    },[])
+    }
+  }
 
-  // тестовые состояния авторизации пользователя и других стейтов
-  const [currentUser, setCurrentUser] = useState({name: "Oleg", email: "ol@ya.ru"});
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [isLoaging, setIsLoaging] = useState(false);
-
-
-  // тестовое состояние уведомления пользователя при регистрации и входе
-  const [infoMessage, setInfoMessage] = useState(MESSAGE_ERROR)
+  function handleSignOut() {
+    localStorage.clear();
+    setLoggedIn(false);
+    setIsLoading(false)
+    setCurrentUser({});
+    history.push('/');
+  }
 
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
 
       <div className='app'>
-        {isLoaging ? (
+        {isLoading ? (
           <Preloader />
         ) : (
           <>
@@ -68,21 +197,28 @@ function App() {
                 exact path='/movies'
                 loggedIn={loggedIn}
                 component={Movies}
-                savedMoviesList={JSON.parse(localStorage.getItem('movies'))}
+                savedMoviesList={savedMovies}
+                onLikeClick={handleSaveMovie}
+                onDeleteClick={handleDeleteMovie}
+                // savedMoviesList={JSON.parse(localStorage.getItem('movies'))}
               />
 
               <ProtectedRoute
                 exact path='/saved-movies'
                 loggedIn={loggedIn}
                 component={SavedMovies}
-                savedList={JSON.parse(localStorage.getItem('movies'))}
+                savedMoviesList={savedMovies}
+                onDeleteClick={handleDeleteMovie}
               />
 
               <ProtectedRoute
                 exact path='/profile'
                 loggedIn={loggedIn}
                 component={Profile}
+                onSignOut={handleSignOut}
+                onUpdate={handleUpdateUser}
                 infoMessage={infoMessage}
+                setInfoMessage={setInfoMessage}
               />
 
               <Route exact path='/' >
@@ -90,11 +226,21 @@ function App() {
               </Route>
 
               <Route path='/signup'>
-                {loggedIn ? <Redirect to='/movies' /> : <Register onRegister={console.log("handleRegister")} infoMessage={infoMessage} />}
+                {loggedIn ?
+                  <Redirect to='/movies' /> :
+                  <Register
+                    onRegister={handleRegister}
+                    infoMessage={infoMessage}
+                    setInfoMessage={setInfoMessage}
+                  />}
               </Route>
 
               <Route path='/signin'>
-                {loggedIn ? <Redirect to='/movies' /> : <Login onLogin={console.log("handleLogin")} infoMessage={infoMessage} />}
+                {loggedIn ? <Redirect to='/movies' /> :
+                  <Login onLogin={handleLogin}
+                         infoMessage={infoMessage}
+                         setInfoMessage={setInfoMessage}
+                  />}
               </Route>
 
               <Route path="*">

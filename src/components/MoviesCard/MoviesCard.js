@@ -1,12 +1,29 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import './MoviesCard.css';
-import { getTimeWithMin } from '../../utils/getTimeWithMinutes';
+import { getTimeWithMin } from '../../utils/utils';
+import { saveNewMovie } from '../../utils/MainApi'
 
-function MoviesCard({ card, savedPages }) {
-  const [isLiked, setIsLiked ] = useState(false)
-  // console.log(savedPages)
-  function handleLike () {
-    setIsLiked(!isLiked)
+function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
+
+    //обработчик клика по кнопке лайка
+  function handleLikeClick(movie) {
+    const {_id, ...saveCard} = movie // убираем лишний параметр
+    onLike(saveCard);
+  }
+  //   function handleLikeClick(movie){
+  //     console.log(movie)
+  //      const {_id, ...card} = movie // убираем лишний параметр
+  //   saveNewMovie(card)
+  //     .then(newCard => {
+  //       // setSavedMovies([newCard, ...savedMovies]);
+  //     console.log(newCard)
+  //     })
+  //     .catch(err => console.log(`Запись фильма на MainApi не прошла ${err}`))
+  // }
+
+  //обработчик клика по кнопке удаления/дизлайка
+  function handleDeleteClick(movie) {
+    onDelete(movie);
   }
 
   return (
@@ -18,15 +35,16 @@ function MoviesCard({ card, savedPages }) {
         </div>
           <button
           className={`movie__btn
-          ${savedPages ? 'movie__delete-btn' : 'movie__save-btn'}
-          ${isLiked && !savedPages ? 'movie__save-btn_active' : ''}`}
+          ${savedPage ? 'movie__delete-btn' : 'movie__save-btn'}
+          ${liked && !savedPage ? 'movie__save-btn_active' : ''}`}
           type='button'
           aria-label='Сохранить в избранное'
-          onClick={() => handleLike()}
+          // убрать call-back позже - тестирование
+          onClick={savedPage || liked ? () => handleDeleteClick(card) : () => handleLikeClick(card)}
         />
       </div>
       <a className='movie__link' href={card.trailer || card.trailerLink} target='_blank' rel='noreferrer'>
-        <img className='movie__pic' src={`https://api.nomoreparties.co/${card.image.url}`} alt='Фильм'/>
+        <img className='movie__pic' src={card.image} alt='Фильм'/>
       </a>
     </article>
   );

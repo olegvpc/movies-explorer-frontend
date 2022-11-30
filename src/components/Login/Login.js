@@ -1,7 +1,7 @@
 import './Login.css';
 import Entrance from "../Entrance/Entrance";
 
-function Login({ onLogin, infoMessage }){
+function Login({ onLogin, infoMessage, setInfoMessage }){
 
   return (
     <Entrance
@@ -13,6 +13,7 @@ function Login({ onLogin, infoMessage }){
       linkName='Регистрация'
       onSubmit={onLogin}
       infoMessage={infoMessage}
+      setInfoMessage={setInfoMessage}
     />
   );
 }

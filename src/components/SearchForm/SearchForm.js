@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './SearchForm.css';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 import findMovie from '../../images/find-movie.svg'
@@ -5,12 +6,26 @@ import findMovie from '../../images/find-movie.svg'
 
 function SearchForm({ onSearchClick, savedMoviesPage, shortFilms, onCheckbox }) {
 
-  const {values, errors, isValid, handleChange} = useFormAndValidation();
+  const {values, errors, isValid, setValues, setIsValid, handleChange} = useFormAndValidation();
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSearchClick(values.query);
+  }
+
+  useEffect(() => {
+    if (!savedMoviesPage) {
+      const input = localStorage.getItem('searchQuery');
+      if (input) {
+        setValues({query : input});
+        setIsValid(true);
+      }
+    }
+  }, [savedMoviesPage, setValues, setIsValid]);
 
   return (
     <div className='search-form'>
-      <form className='search-form__form' onSubmit={() => console.log("handleSubmit")}>
+      <form className='search-form__form' onSubmit={handleSubmit}>
         <input
           type='text'
           placeholder='Фильм'
