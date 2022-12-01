@@ -26,7 +26,7 @@ function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
     // ф-я фильтрации массива и установки его в хранилище и стейт
   function filterShortMovie (arr) {
     setFilteredMovies(shortFilms === 'on' ? filterShortMovies(arr) : arr);
-    console.log(arr, filteredMovies)
+    // console.log(arr, filteredMovies)
   }
 
   function handleSetFilteredMovies (movies, query) {
@@ -43,7 +43,7 @@ function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
     localStorage.setItem('searchQuery', value);
 
     if (!allMovies.length) {
-      console.log("Cтейт allMovies пустой")
+      // console.log("Cтейт allMovies пустой")
       getAllMovies()
         .then((data) => {
           setAllMovies(data);
@@ -57,7 +57,7 @@ function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
         })
         .finally(() => setIsMoviesLoaging(false))
     } else {
-      console.log("allMovies имеет данные")
+      // console.log("allMovies имеет данные")
       handleSetFilteredMovies(allMovies, value);
       setIsMoviesLoaging(false);
     }
@@ -80,29 +80,17 @@ function Movies({ savedMoviesList, onLikeClick, onDeleteClick }) {
       const arr = filterMovies(allMovies, searchQuery, shortFilms);
       filterShortMovie(arr)
       handleCheckFilteredMovies(arr);
-      console.log(`query length massive - ${arr.length}`)
-      console.log(arr)
+      // console.log(`query length massive - ${arr.length}`)
+      // console.log(arr)
     }
     if (isSavedSearchedMovie) {
-      console.log(`short: ${shortFilms} savedMassive: ${searchedMovies}`)
+      // console.log(`short: ${shortFilms} savedMassive: ${searchedMovies}`)
       const arr = filterMovies(searchedMovies, searchQuery, shortFilms);
       filterShortMovie(arr)
       handleCheckFilteredMovies(arr)
-      console.log(`saved- length filtered massive: ${filteredMovies.length}`)
+      // console.log(`saved- length filtered massive: ${filteredMovies.length}`)
     }
   }, [searchQuery, allMovies, shortFilms])
-
-  // НАЧАЛЬНОЕ МОНТИРОВАНИЕ И УСТАНОВКА СТЕЙТА сохраненных фильмов - true
-  // useEffect(() => {
-  //   if (searchedMovies?.length) {
-  //     setIsSavedSearchedMovie(true)
-  //     filterShortMovie(searchedMovies)
-  //     handleCheckFilteredMovies(filteredMovies)
-  //
-  //     console.log(
-  //       `start exist Mount - short: ${shortFilms}, arr: ${searchedMovies}`)
-  //     }
-  //   }, [])
 
 
   return (

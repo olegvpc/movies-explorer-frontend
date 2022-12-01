@@ -21,9 +21,6 @@ function MoviesCardList({
   const [showCardList, setShowCardList] = useState([]);
   const [cardsShowParams, setCardsShowParams] = useState({sum: 0, more: 0});
 
-  // console.log(list, isEmptyList)
-  // const showCardsList =  list?.filter((item, index) => {
-  //   return savedMoviesPage ? index < 5 : index < 12})
 
   // стейт с параметрами стриницы меняется при изменении размера экрана
   useEffect(() => {
@@ -46,9 +43,6 @@ function MoviesCardList({
     if(list.length && !savedMoviesPage){
       const res = list.filter((item, index) => index < cardsShowParams.sum);
       setShowCardList(res);
-      // console.log(list)
-      // console.log(isEmptyList)
-      // console.log(list.length, showCardList.length)
     }
   }, [list, savedMoviesPage, cardsShowParams.sum]);
 
@@ -113,7 +107,7 @@ function MoviesCardList({
           savedPage={savedMoviesPage}
         />)
     })
-  };
+  }
 
   return (
     <section className='movies-list'>

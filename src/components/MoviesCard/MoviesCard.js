@@ -10,16 +10,6 @@ function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
     const {_id, ...saveCard} = movie // убираем лишний параметр
     onLike(saveCard);
   }
-  //   function handleLikeClick(movie){
-  //     console.log(movie)
-  //      const {_id, ...card} = movie // убираем лишний параметр
-  //   saveNewMovie(card)
-  //     .then(newCard => {
-  //       // setSavedMovies([newCard, ...savedMovies]);
-  //     console.log(newCard)
-  //     })
-  //     .catch(err => console.log(`Запись фильма на MainApi не прошла ${err}`))
-  // }
 
   //обработчик клика по кнопке удаления/дизлайка
   function handleDeleteClick(movie) {

@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom'
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
@@ -29,6 +35,7 @@ import { SUCCESSFUL_CODE } from '../../utils/constants';
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
 
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
@@ -163,9 +170,10 @@ function App() {
       verifyToken(token)
       .then((res) => {
         setLoggedIn(true);
-        history.push('/movies');
+        history.push(location.pathname);
       })
       .catch((err) => {
+        handleSignOut()
         console.log(err);
       });
     }
