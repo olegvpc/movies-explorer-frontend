@@ -1,7 +1,9 @@
 import './Entrance.css';
 import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
+import InfoMessage from '../InfoMessage/InfoMessage';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
+import { useEffect } from 'react'
 
 
 function Entrance({
@@ -13,16 +15,24 @@ function Entrance({
   linkName,
   onSubmit,
   infoMessage,
+  setInfoMessage,
  }) {
 
   const {values, errors, isValid, handleChange} = useFormAndValidation();
+
+  // убираем показ блока InfoMessage при загрузке страницы
+  useEffect(() => {
+    console.count("ENNRANCE - hide message error")
+    setInfoMessage({...infoMessage, isShown: false, message: "", code: ""})
+  }, [])
+
 
   function handleSubmit(e) {
     e.preventDefault();
     type === 'signup'
       ? onSubmit(values.name, values.email, values.password)
       : onSubmit(values.email, values.password);
-  };
+  }
 
   return (
     <section className='entrance'>
@@ -39,14 +49,14 @@ function Entrance({
               minLength='2'
               maxLength='30'
               required
-              pattern='^[A-Za-zА-Яа-яЁё /s -]+$'
+              pattern='^[A-Za-zА-Яа-яЁё\s\-]+$'
               value={values.name || ''} // Чтобы Реакт не ругался в консоли на пустые поля
               onChange={handleChange}
             />
-            {/*<span id='name-error' className='entrance__error'>*/}
-            {/*  {errors.name ? `Поле должно быть заполнено и может содержать только латиницу,*/}
-            {/*    кириллицу, пробел или дефис` : ''}*/}
-            {/*</span>*/}
+            <span id='name-error' className='entrance__error'>
+              {errors.name ? `Поле должно быть заполнено и может содержать только латиницу,
+                кириллицу, пробел или дефис` : ''}
+            </span>
             </label>
         )}
         <label className='entrance__label'>E-mail
@@ -61,9 +71,9 @@ function Entrance({
             value={values.email || ''}
             onChange={handleChange}
           />
-          {/*<span id='email-error' className='entrance__error'>*/}
-          {/*  {errors.email || ''}*/}
-          {/*</span>*/}
+          <span id='email-error' className='entrance__error'>
+            {errors.email || ''}
+          </span>
         </label>
         <label className='entrance__label'>Пароль
           <input
@@ -77,13 +87,12 @@ function Entrance({
             value={values.password || ''}
             onChange={handleChange}
           />
-          {/*<span id='password-error' className='entrance__error'>*/}
-          {/*  {errors.password || ''}*/}
-          {/*</span>*/}
-        <span className='entrance__total-error'>
-          {(errors.name ||  errors.password || errors.email) && infoMessage}
-        </span>
+          <span id='password-error' className='entrance__error'>
+            {errors.password || ''}
+          </span>
         </label>
+
+        <InfoMessage {...infoMessage} />
 
         <button
           className='entrance__submit-btn app__link'

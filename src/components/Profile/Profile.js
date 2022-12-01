@@ -1,11 +1,12 @@
 import './Profile.css';
-import React from 'react';
+import React, { useEffect } from 'react'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
-// import InfoMessage from '../InfoMessage/InfoMessage';
+import InfoMessage from '../InfoMessage/InfoMessage';
+import { SUCCESSFUL_CODE } from '../../utils/constants';
 
 
-function Profile({ onSignOut, onUpdate, infoMessage }) {
+function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
 
   const currentUser = React.useContext(CurrentUserContext);
   const {values, errors, isValid, handleChange, setValues, setIsValid} = useFormAndValidation();
@@ -30,10 +31,16 @@ function Profile({ onSignOut, onUpdate, infoMessage }) {
 
   // блокируем поля если редактирование прошло успешно
   React.useEffect(() => {
-    if (infoMessage.isShown && infoMessage.code === 200) {
+    if (infoMessage.isShown && infoMessage.code === SUCCESSFUL_CODE) {
       setIsInputActive(false);
     }
   }, [setIsInputActive, infoMessage.isShown, infoMessage.code]);
+
+  // убираем показ блока InfoMessage через 5 сек
+  useEffect(() => {
+    console.count("PROFILE CHANGED")
+    setTimeout(() => setInfoMessage({...infoMessage, isShown: false}), 5000)
+  }, [infoMessage.isShown])
 
   // обработчик отправки формы
   function handleSubmit(e) {
@@ -88,7 +95,7 @@ function Profile({ onSignOut, onUpdate, infoMessage }) {
             </span>
           </label>
 
-          {/*<InfoMessage {...infoMessage} />*/}
+          <InfoMessage {...infoMessage} />
 
           {isInputActive ? (
             <button

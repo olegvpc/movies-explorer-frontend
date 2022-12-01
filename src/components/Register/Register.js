@@ -2,7 +2,7 @@ import './Register.css';
 import Entrance from '../Entrance/Entrance';
 
 
-function Register({ onRegister, infoMessage }){
+function Register({ onRegister, infoMessage, setInfoMessage }){
 
   return (
     <Entrance
@@ -14,6 +14,7 @@ function Register({ onRegister, infoMessage }){
       linkName='Войти'
       onSubmit={onRegister}
       infoMessage={infoMessage}
+      setInfoMessage={setInfoMessage}
     >
     </Entrance>
   );
