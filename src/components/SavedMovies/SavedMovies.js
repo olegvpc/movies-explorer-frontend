@@ -5,7 +5,6 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 import { filterMovies } from '../../utils/utils';
 
-
 function SavedMovies({ savedMoviesList, onDeleteClick }) {
 
     // состояния запросов
@@ -22,14 +21,13 @@ function SavedMovies({ savedMoviesList, onDeleteClick }) {
     setSearchQuery(value);
     const resultList = filterMovies(savedMoviesList, searchQuery, shortFilms);
     setFilteredMovies(resultList);
-  };
+  }
 
   // обработчик клика по радиокнопке
   function handleShortFilms(e) {
     setShortFilms(e.target.value);
-  };
+  }
 
-  // ---ЭФФЕКТЫ---
   // по новому запросу фильтруем фильмы
   useEffect(() => {
     const arr = filterMovies(savedMoviesList, searchQuery, shortFilms);

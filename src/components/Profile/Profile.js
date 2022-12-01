@@ -5,7 +5,6 @@ import useFormAndValidation from '../../hooks/useFormAndValidation';
 import InfoMessage from '../InfoMessage/InfoMessage';
 import { SUCCESSFUL_CODE } from '../../utils/constants';
 
-
 function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
 
   const currentUser = React.useContext(CurrentUserContext);
@@ -38,7 +37,7 @@ function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
 
   // убираем показ блока InfoMessage через 5 сек
   useEffect(() => {
-    console.count("PROFILE CHANGED")
+    // console.count("PROFILE CHANGED")
     setTimeout(() => setInfoMessage({...infoMessage, isShown: false}), 5000)
   }, [infoMessage.isShown])
 
@@ -46,12 +45,12 @@ function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
   function handleSubmit(e) {
     e.preventDefault();
     onUpdate(values.name, values.email);
-  };
+  }
 
   // обработчик для разблокирования полей ввода
   function handleRedactClick() {
     setIsInputActive(true);
-  };
+  }
 
   return (
     <section className='profile'>
@@ -129,6 +128,6 @@ function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
 
     </section>
   );
-};
+}
 
 export default Profile;
