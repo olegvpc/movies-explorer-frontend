@@ -1,0 +1,44 @@
+/*.teacher-card{*/
+/*  border-left: 1px solid darkgrey;*/
+/*  border-right: 1px solid darkgrey;*/
+/*  border-top: 1px solid darkgrey;*/
+
+/*}*/
+
+/*.teacher-card:last-child{*/
+/*  border-left: 1px solid darkgrey;*/
+/*  border-right: 1px solid darkgrey;*/
+/*  border-bottom: 1px solid darkgrey;*/
+/*}*/
+thead,
+tfoot {
+    background-color: #3f87a6;
+    color: #fff;
+}
+
+tbody {
+    background-color: #e4f0f5;
+}
+
+.teachers-list-title {
+    padding-bottom: 10px;
+    caption-side: top;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.6rem;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 5px 10px;
+}
+
+td {
+    text-align: center;
+}

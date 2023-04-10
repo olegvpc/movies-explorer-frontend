@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+// import env from "react-dotenv";
 import {
   Redirect,
   Route,
@@ -18,22 +19,33 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
+import School from '../School/School';
 import PageNotFound from'../PageNotFound/PageNotFound';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import AdminRoute from "../AdminRoute/AdminRoute";
+import TeachersList from "../TeachersList/TeachersList";
+import SubstituteAll from "../SubstituteAll/SubstituteAll"
 import {
   getUserInfo,
   saveNewMovie,
   deleteMovie,
   updateUserInfo,
+  getUsersMovies,
   register,
   login,
   verifyToken
 } from '../../utils/MainApi';
-import { getUsersMovies } from '../../utils/MainApi'
-import { SUCCESSFUL_CODE } from '../../utils/constants';
+// import { getUsersMovies } from '../../utils/MainApi'
+import {SUCCESSFUL_CODE} from '../../utils/constants';
+import Substitute from "../Substitute/Substitute";
+// import { botToken } from '../../utils/index'
 
 
 function App() {
+
+  // startTelegramBot()
+  // console.log(botToken)
+
   const history = useHistory();
   const location = useLocation();
 
@@ -44,6 +56,9 @@ function App() {
    // состояния фильмов пользователя
   const [savedMovies, setSavedMovies] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isTeachersError, setIsTeachersError] = useState(false);
+
+  const [allTeachers, setAllTeachers] = useState([]);
 
     const [infoMessage, setInfoMessage] = useState({
     isShown: false,
@@ -57,6 +72,7 @@ function App() {
       console.count("RENDER - TOKEN") // пустой массив зависимостей - Render только при монтировании
       checkToken();
       setIsLoading(false)
+    // eslint-disable-next-line
   }, [])
 
   // если пользователь уже авторизован, загрузить его данные и корточки с сервера
@@ -182,7 +198,7 @@ function App() {
   function handleSignOut() {
     localStorage.clear();
     setLoggedIn(false);
-    setIsLoading(false)
+    setIsLoading(false);
     setCurrentUser({});
     history.push('/');
   }
@@ -190,14 +206,17 @@ function App() {
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
+    {/*<TeachersContext.Provider value={allTeachers}>*/}
 
       <div className='app'>
         {isLoading ? (
           <Preloader />
         ) : (
           <>
-            <Route exact path={["/", "/movies", "/saved-movies", "/profile"]}>
-              <Header loggedIn={loggedIn} />
+            <Route path={["/", "/movies", "/saved-movies", "/profile", "/school"]}>
+              <Header
+                loggedIn={loggedIn}
+              />
             </Route>
 
             <Switch>
@@ -219,6 +238,39 @@ function App() {
                 onDeleteClick={handleDeleteMovie}
               />
 
+              <Route path="/school">
+                <AdminRoute
+                  exect path='/school'
+                  component={School}
+                  loggedIn={loggedIn}
+                  setAllTeachers={setAllTeachers}
+                  setIsTeachersError={setIsTeachersError}
+                />
+                <Switch>
+                  <Route
+                    exact path="/school/teachers">
+                    <TeachersList
+                      isTeachersError={isTeachersError}
+                      loggedIn={loggedIn}
+                      allTeachers={allTeachers}
+                    />
+                  </Route>
+                  <Route
+                    exact path="/school/substitute">
+                    <Substitute
+                      allTeachers={allTeachers}
+                    />
+                  </Route>
+                  <Route
+                    exact path="/school/substitute-all">
+                    <SubstituteAll
+                      // allTeachers={allTeachers}
+                    />
+                  </Route>
+                </Switch>
+              </Route>
+
+
               <ProtectedRoute
                 exact path='/profile'
                 loggedIn={loggedIn}
@@ -228,6 +280,9 @@ function App() {
                 infoMessage={infoMessage}
                 setInfoMessage={setInfoMessage}
               />
+
+
+
 
               <Route exact path='/' >
                 <Main />
@@ -256,13 +311,14 @@ function App() {
               </Route>
 
             </Switch>
-            <Route exact path={['/', '/movies', '/saved-movies']}>
+
+            <Route exact path={['/', '/movies', '/saved-movies', '/school']}>
               <Footer />
             </Route>
           </>
         )}
       </div>
-
+    {/*</TeachersContext.Provider>*/}
     </CurrentUserContext.Provider>
   );
 }

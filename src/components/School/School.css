@@ -1,0 +1,28 @@
+.school_navigate {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  padding: 5px 70px;
+  background-color: #DDDEE3;
+  border-bottom: 1px solid #E8E8E8;
+  /*z-index: 20;*/
+  /*border: 1px green dashed;*/
+}
+
+@media screen and (max-width: 1024px){
+  .school_navigate {
+    padding: 18px 40px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .school_navigate {
+    padding: 18px 30px;
+  }
+}
+
+@media screen and (max-width: 568px){
+  .school_navigate {
+    padding: 18px 14px;
+  }
+}

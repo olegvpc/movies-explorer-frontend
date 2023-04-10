@@ -10,7 +10,9 @@ function Header({ loggedIn }) {
   return (
     <header className={`header ${(!loggedIn || mainSite )&& "header_main"}`}>
         <Logo />
-        <Navigation loggedIn={loggedIn}/>
+        <Navigation
+          loggedIn={loggedIn}
+        />
     </header>
   );
 }

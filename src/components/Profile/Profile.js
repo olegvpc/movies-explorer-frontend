@@ -39,6 +39,7 @@ function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
   useEffect(() => {
     // console.count("PROFILE CHANGED")
     setTimeout(() => setInfoMessage({...infoMessage, isShown: false}), 5000)
+    // eslint-disable-next-line
   }, [infoMessage.isShown])
 
   // обработчик отправки формы

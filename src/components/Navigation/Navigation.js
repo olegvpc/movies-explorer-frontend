@@ -1,13 +1,14 @@
 import './Navigation.css';
 import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import accountPath from '../../images/account.svg'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 
 function Navigation({ loggedIn }) {
-
+  const currentUser = React.useContext(CurrentUserContext);
   const [isClicked, setIsClicked] = useState(false);
-  // console.log(loggedIn)
+  // console.log(currentUser)
 
   //---ОБРАБОТЧИКИ---
   function handleMenuOpen() {
@@ -41,6 +42,10 @@ function Navigation({ loggedIn }) {
             onClick={handleMenuClose}>
               Сохраненные фильмы
             </NavLink>
+            {currentUser.email === 'admin@ya.ru' ? <NavLink to='/school' activeClassName='menu__film-link_active' className='menu__film-link app__link'
+            onClick={handleMenuClose}>
+              Школа 1589
+            </NavLink> : ''}
             <Link to='/profile' className='menu__link menu__link_type_profile app__link'
             onClick={handleMenuClose}>
               {/*<button className="menu__account-button">*/}

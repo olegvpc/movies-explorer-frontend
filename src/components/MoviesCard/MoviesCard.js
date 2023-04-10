@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 import './MoviesCard.css';
 import { getTimeWithMin } from '../../utils/utils';
-import { saveNewMovie } from '../../utils/MainApi'
+// import { saveNewMovie } from '../../utils/MainApi'
 
 function MoviesCard({ card, onLike, onDelete, liked, savedPage }) {
 
