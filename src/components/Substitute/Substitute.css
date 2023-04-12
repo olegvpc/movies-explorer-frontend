@@ -45,10 +45,10 @@
   position: relative;
 }
 
-.subs__label:last-of-type{
-  border-bottom: none;
-  margin-top: 6px;
-}
+/*.subs__label:last-of-type{*/
+/*  border-bottom: none;*/
+/*  margin-top: 6px;*/
+/*}*/
 
 .subs__input{
   border: none;

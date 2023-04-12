@@ -53,3 +53,83 @@ tfoot {
 tbody {
     background-color: #e4f0f5;
 }
+
+.checked-form__filter-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.18;
+  margin-top: 15px;
+  align-items: center;
+  border-bottom: 1px solid #E8E8E8;
+  position: relative;
+}
+
+.checked-form__filter-name{
+  /*font-weight: 400;*/
+  /*font-size: 13px;*/
+  /*line-height: 18px;*/
+  margin-right: 10px;
+}
+
+.checked-form__filter{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 20px;
+  width: 36px;
+  margin: 0;
+  background-color: #e8e8e8;
+  border-radius: 20px;
+  padding: 6px;
+  position: relative;
+}
+
+.checked-form__filter_active{
+  background-color: #2BE080;
+}
+
+.checked-form__switch{
+  box-sizing: border-box;
+  height: 8px;
+  width: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: relative;
+  /*left: 0;*/
+  /*z-index: 2;*/
+  transition: transform .3s ease-in;
+}
+
+.checked-form__filter:hover .checked-form__switch{
+  transform: scale(1.7);
+}
+
+.checked-form__radio{
+  position: absolute;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  height: 20px;
+  width: 50px;
+  opacity: 0;
+  z-index: 3;
+}
+
+/*.checked-form__radio:hover{*/
+/*  cursor: pointer;*/
+/*}*/
+.checked-form__radio:checked ~ .checked-form__switch{
+  left: 0;
+}
+
+.checked-form__radio ~ :checked ~ .checked-form__switch{
+  left: 16px;
+}
+
+.checked-form__filter .checked-form__radio:checked{
+  z-index: 1;
+}

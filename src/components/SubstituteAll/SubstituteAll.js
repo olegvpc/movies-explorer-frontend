@@ -14,6 +14,7 @@ function SubstituteAll({ onDelete }) {
   const [allSubstitutes, setAllSubstitutes] = useState([])
   const [allSubstitutesInterval, setAllSubstitutesInterval] = useState([])
   const [isSubsError, setIsSubsError] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   // const [showSubTeachersInterval, setShowSubTeachersInterval] = useState(false)
 
   const {values, errors, isValid, handleChange, resetForm} = useFormAndValidation();
@@ -26,6 +27,12 @@ function SubstituteAll({ onDelete }) {
         console.log('Error in SubstituteAll - Api')
       })
   },[])
+
+  function onCheckbox(e){
+    // setIsChecked(e.target.value)
+    setIsChecked((prev) => !prev)
+    console.log(e.target.value)
+  }
 
   function handleSubstitutesInteval(e) {
     e.preventDefault();
@@ -123,6 +130,28 @@ function SubstituteAll({ onDelete }) {
                 {errors.endInterval || ''}
               </span>
             </label>
+            <div className='checked-form__filter-box'>
+              <p className='checked-form__filter-name'>Подтвержденные замены</p>
+              <label className={`checked-form__filter
+                ${isChecked ? 'checked-form__filter_active' : ''}`
+              }>
+                <input className='checked-form__radio'
+                  type='radio'
+                  name='checkedSwitch'
+                  value='off'
+                  checked={!isChecked ? true : false}
+                  onChange={onCheckbox}
+                />
+                <input className='checked-form__radio'
+                  type='radio'
+                  name='checkedSwitch'
+                  value='on'
+                  checked={isChecked ? true : false}
+                  onChange={onCheckbox}
+                />
+                <span className='checked-form__switch'></span>
+              </label>
+            </div>
             <button
               className={`subs__btn subs__btn_type_submit app__link`}
               type='submit'
@@ -162,16 +191,19 @@ function SubstituteAll({ onDelete }) {
                         </tr>
                       </thead>
                       <tbody>
-                      {allSubstitutesInterval.map((item) => (
+                      {allSubstitutesInterval.map((item) => {
+                        return (!isChecked || item?.status === "Agree") ? (
                         <tr key={item._id}>
                           <td>{item.teacherSubstitute}</td>
                           <td>{getDateShort(item?.dateSubstitute)}</td>
                           <td>{item?.teacherIll}</td>
                           <td>{item?.comment}</td>
-                          <td className={`${(item?.status === "Disagree" || item?.status === "No data") && 'subs-all-list__message_type_err'}`}>{item?.status}</td>
+                          {(!isChecked || item?.status === "Agree") ? (<td className={`${(item?.status === "Disagree" || item?.status === "No data") && 'subs-all-list__message_type_err'}`}>{item?.status}</td>) : ''}
                           <td>{getDateShort(item.createdAt)}</td>
                         </tr>
-                      ))}
+                        ) : ''
+                        }
+                      )}
                       </tbody>
                     </table>
           )}

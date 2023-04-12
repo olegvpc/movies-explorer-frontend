@@ -28,3 +28,6 @@ https://api.olegvpc.diplom.nomoredomains.icu
 
 # Ссылка на pull Request
 https://github.com/olegvpc/movies-explorer-frontend/pull/2
+
+## deploy on server
+* 1- Change export const BASE_URL = 'https://api.olegvpc.diplom.nomoredomains.icu'; (constants.js)
