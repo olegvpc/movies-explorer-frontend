@@ -29,5 +29,16 @@ https://api.olegvpc.diplom.nomoredomains.icu
 # Ссылка на pull Request
 https://github.com/olegvpc/movies-explorer-frontend/pull/2
 
+## start in serve
+```
+npm uninstall -g serve 
+npm i -S serve
+npx serve -s build 
+```
+
 ## deploy on server
-* 1- Change export const BASE_URL = 'https://api.olegvpc.diplom.nomoredomains.icu'; (constants.js)
+* 1- ssh olegvpc-diplom@158.160.39.232
+* 2- git clone https://github.com/olegvpc/movies-explorer-frontend.git
+* 3- npm install
+* 4- Change export const BASE_URL = 'https://api.olegvpc.diplom.nomoredomains.icu'; (constants.js)
+* 5- npm run build

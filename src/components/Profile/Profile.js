@@ -52,7 +52,7 @@ function Profile({ onSignOut, onUpdate, infoMessage, setInfoMessage }) {
   function handleRedactClick() {
     setIsInputActive(true);
   }
-
+  // console.log(currentUser)
   return (
     <section className='profile'>
       <div className='profile__box'>

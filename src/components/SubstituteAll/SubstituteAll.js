@@ -9,7 +9,7 @@ import {
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 // import TeacherCard from "../TeacherCard/TeacherCard";
 
-function SubstituteAll({ onDelete }) {
+function SubstituteAll() {
 
   const [allSubstitutes, setAllSubstitutes] = useState([])
   const [allSubstitutesInterval, setAllSubstitutesInterval] = useState([])
@@ -31,7 +31,7 @@ function SubstituteAll({ onDelete }) {
   function onCheckbox(e){
     // setIsChecked(e.target.value)
     setIsChecked((prev) => !prev)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
 
   function handleSubstitutesInteval(e) {

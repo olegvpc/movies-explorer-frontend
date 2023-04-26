@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Route, Redirect } from "react-router-dom";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 
@@ -8,7 +8,7 @@ const AdminRoute = ({ component: Component, ...props }) => {
   return (
     <Route>
       {() =>
-        props.loggedIn && currentUser.email === 'admin@ya.ru' ? <Component {...props} /> : <Redirect to='./' />
+        props.currentUser?.email === 'admin@ya.ru' ? <Component {...props} /> : <Redirect to='/' />
       }
     </Route>
   );

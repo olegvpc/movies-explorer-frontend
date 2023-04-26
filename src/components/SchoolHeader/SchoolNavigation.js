@@ -17,13 +17,13 @@ function SchoolNavigation() {
             >
               Главная страница школы
             </NavLink>
-            <NavLink to='/school/substitute' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
+            <NavLink to='/substitute' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
               Запрос на замену
             </NavLink>
-            <NavLink to='/school/substitute-all' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
+            <NavLink to='/substitute-all' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
               Отчет по заменам
             </NavLink>
-            <NavLink to='/school/teachers' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
+            <NavLink to='/teachers' activeClassName='school_navigate__film-link_active' className='school_navigate__film-link app__link'>
               Список учителей
             </NavLink>
           </div>

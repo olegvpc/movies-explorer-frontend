@@ -8,6 +8,7 @@ import {
   useLocation,
 } from 'react-router-dom'
 
+
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
 import Preloader from '../Preloader/Preloader';
@@ -35,7 +36,7 @@ import {
   login,
   verifyToken
 } from '../../utils/MainApi';
-// import { getUsersMovies } from '../../utils/MainApi'
+
 import {SUCCESSFUL_CODE} from '../../utils/constants';
 import Substitute from "../Substitute/Substitute";
 // import { botToken } from '../../utils/index'
@@ -55,6 +56,7 @@ function App() {
 
    // состояния фильмов пользователя
   const [savedMovies, setSavedMovies] = useState([]);
+  // eslint-disable-next-line
   const [isError, setIsError] = useState(false);
   const [isTeachersError, setIsTeachersError] = useState(false);
 
@@ -213,10 +215,17 @@ function App() {
           <Preloader />
         ) : (
           <>
-            <Route path={["/", "/movies", "/saved-movies", "/profile", "/school"]}>
+            <Route exact path={["/", "/movies", "/saved-movies", "/profile", "/school", "/teachers", "/substitute", "/substitute-all"]}>
               <Header
                 loggedIn={loggedIn}
               />
+            </Route>
+            <Route exect path={["/school", "/teachers", "/substitute", "/substitute-all"]}>
+                <School
+                  loggedIn={loggedIn}
+                  setAllTeachers={setAllTeachers}
+                  setIsTeachersError={setIsTeachersError}
+                />
             </Route>
 
             <Switch>
@@ -238,37 +247,65 @@ function App() {
                 onDeleteClick={handleDeleteMovie}
               />
 
-              <Route path="/school">
-                <AdminRoute
-                  exect path='/school'
-                  component={School}
+              {/*<Route exect path={["/school", "/school/teachers", "/school/substitute", "/school/substitute-all"]}>*/}
+                {/*<AdminRoute*/}
+                {/*  exact path='/school'*/}
+                {/*  component={School}*/}
+                {/*  loggedIn={loggedIn}*/}
+                {/*  setAllTeachers={setAllTeachers}*/}
+                {/*  setIsTeachersError={setIsTeachersError}*/}
+                {/*/>*/}
+                {/*<Route*/}
+                {/*    path="/school">*/}
+                {/*    <School*/}
+                {/*      loggedIn={loggedIn}*/}
+                {/*      setAllTeachers={setAllTeachers}*/}
+                {/*      setIsTeachersError={setIsTeachersError}*/}
+                {/*    />*/}
+                {/*</Route>*/}
+
+                {/*<Switch>*/}
+
+                {/*<Route*/}
+                {/*  exact path='/school'*/}
+                {/*  Redirect to='/school/substitute'*/}
+                {/*/>*/}
+
+                <ProtectedRoute
+                  exact path='/teachers'
+                  component={TeachersList}
                   loggedIn={loggedIn}
-                  setAllTeachers={setAllTeachers}
-                  setIsTeachersError={setIsTeachersError}
+                  isTeachersError={isTeachersError}
+                  allTeachers={allTeachers}
+                  currentUser={currentUser}
                 />
-                <Switch>
+                  {/*<Route*/}
+                  {/*  exact path="/teachers">*/}
+                  {/*  <TeachersList*/}
+                  {/*    loggedIn={loggedIn}*/}
+                  {/*    isTeachersError={isTeachersError}*/}
+                  {/*    allTeachers={allTeachers}*/}
+                  {/*  />*/}
+                  {/*</Route>*/}
                   <Route
-                    exact path="/school/teachers">
-                    <TeachersList
-                      isTeachersError={isTeachersError}
-                      loggedIn={loggedIn}
-                      allTeachers={allTeachers}
-                    />
-                  </Route>
-                  <Route
-                    exact path="/school/substitute">
+                    exact path="/substitute">
                     <Substitute
                       allTeachers={allTeachers}
                     />
                   </Route>
-                  <Route
-                    exact path="/school/substitute-all">
-                    <SubstituteAll
-                      // allTeachers={allTeachers}
-                    />
-                  </Route>
-                </Switch>
-              </Route>
+                  <ProtectedRoute
+                  exact path='/substitute-all'
+                  component={SubstituteAll}
+                  loggedIn={loggedIn}
+
+                  />
+
+                  {/*<Route*/}
+                  {/*  exact path="/substitute-all">*/}
+                  {/*  <SubstituteAll />*/}
+                  {/*</Route>*/}
+              {/*  </Switch>*/}
+              {/*</Route>*/}
 
 
               <ProtectedRoute
@@ -284,7 +321,7 @@ function App() {
 
 
 
-              <Route exact path='/' >
+              <Route exact path={['/', '/school']} >
                 <Main />
               </Route>
 
